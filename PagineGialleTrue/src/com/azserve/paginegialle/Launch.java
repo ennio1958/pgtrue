@@ -9,5 +9,6 @@ public class Launch {
 	public static void main(String[] args) throws IOException {
 		PagineGialle x = new PagineGialle(SEARCH,FILE_PATH_ROOT);
 		x.run();
+		//e questa è fatta
 	}
 }
