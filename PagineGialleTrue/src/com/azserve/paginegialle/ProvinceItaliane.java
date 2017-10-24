@@ -23,7 +23,7 @@ public class ProvinceItaliane {
 		Element esTable = doc.select("table[summary]").get(0);
 		System.out.println(esTable.attr("summary"));
 		Elements provinceDoc = esTable.select("tr");
-		provinceDoc.remove(0);
+		provinceDoc.remove(0); //titles
 		for(Element p:provinceDoc){
 			Elements fs = p.select("td");
 			ris.add(fs.get(0).text()+"|"+fs.get(1).text()+"|"+fs.get(2).text());

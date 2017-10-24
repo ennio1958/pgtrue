@@ -44,6 +44,25 @@ public class PagineGialle {
 			e.printStackTrace();
 		}
 	}
+	private List<String> searchProvincia(String prefixGeoData, String sigla) throws IOException{
+		List<String> ris = new ArrayList<String>();
+		String link = DOMINIO+search+"/"+sigla;
+		Document doc = Jsoup.connect(link).get();
+		Elements ncn = doc.select(NEXT_CLASS_NAME);
+		int numeroPagina=0;
+		while(!ncn.isEmpty()){
+			System.out.println("PAGINA " + ++numeroPagina);
+			extractPage(prefixGeoData, ris, doc);
+			link = ncn.get(0).attr("href");
+			doc = Jsoup.connect(link).get();
+			ncn = doc.select(NEXT_CLASS_NAME);
+		}
+		extractPage(prefixGeoData, ris, doc);
+		
+		return ris;
+	}
+
+
 	private void outputToFile(String siglaProvincia,
 			List<String> barProvincia) {
 		//Get the file reference
@@ -65,34 +84,8 @@ public class PagineGialle {
 		
 	}
 
-	public List<String> searchProvincia(String prefixGeoData, String sigla) throws IOException{
-		List<String> ris = new ArrayList<String>();
-		String link = DOMINIO+search+"/"+sigla;
-		Document doc = Jsoup.connect(link).get();
-		Elements ncn = doc.select(NEXT_CLASS_NAME);
-		int numeroPagina=0;
-		while(!ncn.isEmpty()){
-			System.out.println("PAGINA " + ++numeroPagina);
-			Elements tableElements = doc.select("div.table");
-			for(Element bar:tableElements){
-				StringBuffer sb = new StringBuffer();
-				sb.append(searchAttribute(bar, "name"));
-				sb.append("|");
-				sb.append(searchAttribute(bar, "streetAddress"));
-				sb.append("|");
-				sb.append(searchAttribute(bar, "postalCode"));
-				sb.append("|");
-				sb.append(searchAttribute(bar, "addressLocality"));
-				sb.append("|");
-				sb.append(searchAttribute(bar, "telephone"));
-				
-				ris.add(prefixGeoData+"|"+sb.toString());
-			}
-			link = ncn.get(0).attr("href");
-			doc = Jsoup.connect(link).get();
-			ncn = doc.select(".paginationBtn.arrowBtn.rightArrowBtn");
-		}
-		//ultima pagina
+
+	private void extractPage(String prefixGeoData, List<String> ris, Document doc) {
 		Elements tableElements = doc.select("div.table");
 		for(Element bar:tableElements){
 			StringBuffer sb = new StringBuffer();
@@ -106,11 +99,8 @@ public class PagineGialle {
 			sb.append("|");
 			sb.append(searchAttribute(bar, "telephone"));
 			
-			
 			ris.add(prefixGeoData+"|"+sb.toString());
 		}
-		
-		return ris;
 	}
 	
 	private String searchAttribute(Element bar, String attrName){
