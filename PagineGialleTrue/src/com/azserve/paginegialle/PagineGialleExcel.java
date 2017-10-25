@@ -12,7 +12,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 public class PagineGialleExcel {
 
-	private static final String TITLE = "PROV.|DESCR.PROV.|REGIONE|CONTATTO|INDIRIZZO|CAP|LOCALITA|TELEFONI";
+	private static final String TITLE = "PROV.|DESCR.PROV.|REGIONE|CONTATTO|INDIRIZZO|CAP|LOCALITA|PROVINCIA|TELEFONI";
 	private static final String EXCEL_FILE_NAME = "results.xls";
 	private final String search;
 	private final String filePathRoot;

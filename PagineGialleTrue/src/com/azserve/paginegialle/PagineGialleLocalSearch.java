@@ -57,6 +57,8 @@ public class PagineGialleLocalSearch {
 			sb.append("|");
 			sb.append(searchAttribute(e, "addressLocality"));
 			sb.append("|");
+			sb.append(searchAttribute(e, "addressRegion"));
+			sb.append("|");
 			sb.append(searchAttribute(e, "telephone"));
 
 			ris.add(prefix + "|" + sb.toString());
