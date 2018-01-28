@@ -10,20 +10,17 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-public class PagineGialleExcel {
+public class PagineGialleLocalExcel extends AbstractPagineGialle {
 
 	private static final String TITLE = "PROV.|DESCR.PROV.|REGIONE|CONTATTO|INDIRIZZO|CAP|LOCALITA|PROVINCIA|TELEFONI";
 	private static final String EXCEL_FILE_NAME = "results.xls";
-	private final String search;
-	private final String filePathRoot;
 
-	public PagineGialleExcel(final String search, final String filePathRoot) {
-		this.search = search;
-		this.filePathRoot = filePathRoot;
+	public PagineGialleLocalExcel(final String search, final String filePathRoot) {
+		super(search, filePathRoot);
 	}
 
-	public void run() {
-
+	@Override
+	protected void run() {
 		try (Workbook wb = new HSSFWorkbook();
 				FileOutputStream fileOut = new FileOutputStream(filePathRoot + EXCEL_FILE_NAME)) {
 
@@ -38,8 +35,8 @@ public class PagineGialleExcel {
 					try {
 						outputToFile(sheet, siglaProvincia,
 								PagineGialleSearch.getInstance(siglaProvincia, search, s).localResults());
-//						wb.write(fileOut);
-//						fileOut.close();
+						// wb.write(fileOut);
+						// fileOut.close();
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -53,12 +50,11 @@ public class PagineGialleExcel {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
 	}
 
 	private void outputToFile(Sheet sheet, String siglaProvincia, List<String> elements) {
 		Row rowTitle = sheet.createRow(0);
-		writeRow(rowTitle,TITLE);
+		writeRow(rowTitle, TITLE);
 		elements.forEach(el -> {
 			try {
 				Integer lastRow = sheet.getLastRowNum();
@@ -75,8 +71,8 @@ public class PagineGialleExcel {
 	private void writeRow(Row row, String elementiRiga) {
 		// TODO Auto-generated method stub
 		String[] els = elementiRiga.split("\\|");
-		int i=0;
-		for(String s:els){
+		int i = 0;
+		for (String s : els) {
 			Cell cell = row.createCell(i++);
 			cell.setCellValue(s);
 		}

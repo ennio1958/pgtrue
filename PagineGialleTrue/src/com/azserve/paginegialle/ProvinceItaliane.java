@@ -30,4 +30,11 @@ public class ProvinceItaliane {
 		}
 		return ris;
 	}
+	public static String normalizedSigla(String siglaProvincia){
+		if(siglaProvincia==null || siglaProvincia.isEmpty())
+			return siglaProvincia;
+		if(siglaProvincia.equalsIgnoreCase("Roma"))
+			return "RM";
+		return siglaProvincia;
+	}
 }
